@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
+
+@keyframes trampoline {
+  0% {
+    transform: translateY(10%);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: ease-in;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Silkscreen", sans-serif;
+  /* outline: 1px solid red; */
+}
+
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: white;
+}
+
+.game-start {
+  height: 100%;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(2, 1fr);
+  place-items: center;
+  margin: auto;
+}
+
+.game-start p {
+  display: inline-flex;
+  gap: 1ch;
+  grid-column: 1 / -1;
+  font-size: 5rem;
+}
+
+/* Used break-spaces to preserve the white spaces */
+.game-start .word {
+  transform: translateY(10%);
+  white-space: break-spaces;
+  animation: trampoline 1s ease calc(var(--index) * 150 * 1ms) infinite
+    alternate;
+}
+
+.game-start button {
+  outline: none;
+  border: 1px solid white;
+  border-radius: 15px;
+  background-color: inherit;
+  color: inherit;
+  font-size: 4rem;
+  padding: 1rem 4rem;
+}
+
+.start-button {
+  grid-column: 1 / -1;
+}
