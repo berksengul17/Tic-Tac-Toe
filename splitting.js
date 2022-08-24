@@ -1,3 +1,6 @@
+// Split a sentence into words to be
+//able to apply animations
+
 const span = (letter, index) => {
   const node = document.createElement("span");
   node.classList.add("word");
