@@ -1,16 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Silkscreen&display=swap");
 
-@keyframes trampoline {
-  0% {
-    transform: translateY(10%);
-    animation-timing-function: ease-out;
-  }
-  50% {
-    transform: translateY(0);
-    animation-timing-function: ease-in;
-  }
-}
-
 *,
 *::before,
 *::after {
@@ -21,6 +10,10 @@
   /* outline: 1px solid red; */
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   display: flex;
   width: 100vw;
@@ -28,6 +21,12 @@ body {
   background-color: black;
   color: white;
 }
+
+/* 
+===========
+START MENU
+===========
+*/
 
 .game-start {
   height: 100%;
@@ -39,6 +38,7 @@ body {
 
 .game-start p {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 1ch;
   grid-column: 1 / -1;
   font-size: 5rem;
@@ -46,6 +46,7 @@ body {
 
 /* Used break-spaces to preserve the white spaces */
 .game-start .word {
+  flex: 1;
   transform: translateY(10%);
   white-space: break-spaces;
   animation: trampoline 1s ease calc(var(--index) * 150 * 1ms) infinite
@@ -53,6 +54,8 @@ body {
 }
 
 .game-start button {
+  position: relative;
+  flex: 1;
   outline: none;
   border: 1px solid white;
   border-radius: 15px;
@@ -62,6 +65,55 @@ body {
   padding: 1rem 4rem;
 }
 
+.ai-button:hover,
+.human-button:hover {
+  background-color: white;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.ai-button:hover span,
+.human-button:hover span {
+  visibility: hidden;
+}
+
+.ai-button:hover {
+  background-image: url("images/ai-img.png");
+}
+
+.human-button:hover {
+  background-image: url("images/human.png");
+}
+
 .start-button {
   grid-column: 1 / -1;
+}
+
+.start-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.ai-button:active,
+.human-button:active,
+.start-button:active {
+  filter: brightness(90%);
+}
+
+/* 
+===========
+ANIMATIONS
+===========
+*/
+
+@keyframes trampoline {
+  0% {
+    transform: translateY(10%);
+    animation-timing-function: ease-out;
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: ease-in;
+  }
 }
