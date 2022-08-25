@@ -10,6 +10,11 @@
   /* outline: 1px solid red; */
 }
 
+:root {
+  --cell-size: 10vw;
+  --mark-size: calc(var(--cell-size) * 0.9);
+}
+
 html {
   font-size: 10px;
 }
@@ -99,6 +104,56 @@ START MENU
 .human-button:active,
 .start-button:active {
   filter: brightness(90%);
+}
+
+/* 
+===========
+GAME
+===========
+ */
+
+.game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  font-size: var(--mark-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n) {
+  border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+  border-bottom: none;
 }
 
 /* 
