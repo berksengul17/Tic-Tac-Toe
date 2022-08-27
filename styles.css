@@ -27,13 +27,14 @@ body {
   color: white;
 }
 
-button {
+button,
+label {
   position: relative;
+  outline: none;
   border: 1px solid white;
+  border-radius: 8px;
   background-color: inherit;
   color: inherit;
-  outline: none;
-  border-radius: 8px;
 }
 
 button:hover {
@@ -76,33 +77,40 @@ START MENU
     alternate;
 }
 
-.game-start button {
+input[type="radio"] {
+  display: none;
+}
+
+label {
   font-size: 4rem;
   padding: 1rem 4rem;
 }
 
-.ai-button:hover,
-.human-button:hover {
+input[type="radio"]:checked + label {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  background-color: white;
 }
 
-.ai-button:hover span,
-.human-button:hover span {
+/* When selected hide the span that stores the text */
+#ai-button:checked + label span,
+#human-button:checked + label span {
   visibility: hidden;
 }
 
-.ai-button:hover {
+#ai-button:checked + label {
   background-image: url("images/ai-img.png");
 }
 
-.human-button:hover {
+#human-button:checked + label {
   background-image: url("images/human.png");
 }
 
 .start-button {
   grid-column: 1 / -1;
+  font-size: 4rem;
+  padding: 1rem 4rem;
 }
 
 /* 
