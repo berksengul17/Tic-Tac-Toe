@@ -64,39 +64,27 @@ const GameController = (() => {
   const message = document.querySelector(".message");
   const startBtn = document.querySelector(".start-button");
   const restartBtns = document.querySelectorAll(".restart-button");
-  const player_1 = Player("Player 1", "X");
-  const player_2 = Player("Player 2", "O");
+  const changeBtn = document.querySelector(".change-players-button");
   const cells = document.querySelectorAll(".cell");
-  let currentTurn = player_1.getMark();
 
-  const endGame = (winnerMsg) => {
-    message.textContent = winnerMsg.toUpperCase();
-    gameOver.style.display = "grid";
-    game.style.pointerEvents = "none";
-    game.style.filter = "opacity(.5)";
-    game.style.filter = "blur(1rem)";
-  };
+  let player_1 = Player("Player 1", "X");
+  let player_2;
+  let currentTurn;
 
-  const resetStyles = () => {
-    gameOver.style.display = "none";
-    game.style.pointerEvents = "all";
-    game.style.filter = "none";
-  };
-
-  const addListenerToCells = () => {
-    cells.forEach((cell) => {
-      cell.addEventListener("click", makeMove, { once: true });
-    });
-  };
-
-  const changeTurn = () => {
-    if (currentTurn === player_1.getMark()) currentTurn = player_2.getMark();
-    else currentTurn = player_1.getMark();
-  };
-
+  // Hide game start and show game and create
+  // player objects based on the selected opponent
   const startGame = () => {
     gameStart.style.display = "none";
     game.style.display = "flex";
+    const opponent = document.querySelector(
+      'input[name="opponent"]:checked'
+    ).id;
+    if (opponent === "ai") {
+      player_2 = Player("AI", "O");
+    } else if (opponent === "human") {
+      player_2 = Player("Player 2", "O");
+    }
+    currentTurn = player_1.getMark();
   };
 
   // Reset board array, draw new board,
@@ -108,6 +96,23 @@ const GameController = (() => {
     addListenerToCells();
     resetStyles();
     currentTurn = player_1.getMark();
+  };
+
+  // Show winning message and options
+  const endGame = (winnerMsg) => {
+    message.textContent = winnerMsg.toUpperCase();
+    gameOver.style.display = "grid";
+    game.style.pointerEvents = "none";
+    game.style.filter = "opacity(.5)";
+    game.style.filter = "blur(1rem)";
+  };
+
+  // Hide game, show start menu
+  // and reset game
+  const backToMainMenu = () => {
+    game.style.display = "none";
+    gameStart.style.display = "grid";
+    resetGame();
   };
 
   // Draw the mark to the clicked space
@@ -133,9 +138,27 @@ const GameController = (() => {
     }
   };
 
+  const resetStyles = () => {
+    gameOver.style.display = "none";
+    game.style.pointerEvents = "all";
+    game.style.filter = "none";
+  };
+
+  const addListenerToCells = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener("click", makeMove, { once: true });
+    });
+  };
+
+  const changeTurn = () => {
+    if (currentTurn === player_1.getMark()) currentTurn = player_2.getMark();
+    else currentTurn = player_1.getMark();
+  };
+
   startBtn.addEventListener("click", startGame);
   restartBtns.forEach((restartBtn) =>
     restartBtn.addEventListener("click", resetGame)
   );
+  changeBtn.addEventListener("click", backToMainMenu);
   addListenerToCells();
 })();
