@@ -12,30 +12,28 @@ const GameBoard = (() => {
 
   let _board = Array(9).fill(null);
 
+  const getBoard = () => _board;
+  const getMarkAt = (index) => _board[index];
+  const setBoard = (index, mark) => (_board[index] = mark);
+  const resetBoard = () => (_board = Array(9).fill(null));
+
   // If the marks in one of the combitions in the "_WINNING_PATTERNS" array
   // are the same return true otherwise return false
-  const _checkForWin = (mark) =>
+  const checkForWin = (mark) =>
     _WINNING_PATTERNS.some((pattern) =>
       pattern.every((index) => _board[index] === mark)
     );
 
   // If none of the values are null then it is a draw
-  const _checkForDraw = () => !_board.some((mark) => mark === null);
-
-  const getBoard = () => _board;
-  const getMarkAt = (index) => _board[index];
-  const setBoard = (index, mark) => (_board[index] = mark);
-  const resetBoard = () => (_board = Array(9).fill(null));
-  const checkForGameOver = (mark) => {
-    if (_checkForDraw()) return "It's a draw";
-    else if (_checkForWin(mark)) return `${mark} wins`;
-  };
+  const checkForDraw = () => !_board.some((mark) => mark === null);
 
   return {
     getBoard,
     getMarkAt,
     setBoard,
-    checkForGameOver,
+    resetBoard,
+    checkForWin,
+    checkForDraw,
   };
 })();
 
@@ -52,31 +50,92 @@ const DisplayController = (() => {
     cell.textContent = GameBoard.getMarkAt(index);
   };
 
-  return { drawMark };
+  const drawBoard = () => {
+    for (let i = 0; i < 9; i++) drawMark(i);
+  };
+
+  return { drawMark, drawBoard };
 })();
 
 const GameController = (() => {
+  const gameStart = document.querySelector(".game-start");
+  const game = document.querySelector(".game-container");
+  const gameOver = document.querySelector(".game-over-container");
+  const message = document.querySelector(".message");
+  const startBtn = document.querySelector(".start-button");
+  const restartBtns = document.querySelectorAll(".restart-button");
   const player_1 = Player("Player 1", "X");
   const player_2 = Player("Player 2", "O");
   const cells = document.querySelectorAll(".cell");
   let currentTurn = player_1.getMark();
+
+  const endGame = (winnerMsg) => {
+    message.textContent = winnerMsg.toUpperCase();
+    gameOver.style.display = "grid";
+    game.style.pointerEvents = "none";
+    game.style.filter = "opacity(.5)";
+    game.style.filter = "blur(1rem)";
+  };
+
+  const resetStyles = () => {
+    gameOver.style.display = "none";
+    game.style.pointerEvents = "all";
+    game.style.filter = "none";
+  };
+
+  const addListenerToCells = () => {
+    cells.forEach((cell) => {
+      cell.addEventListener("click", makeMove, { once: true });
+    });
+  };
 
   const changeTurn = () => {
     if (currentTurn === player_1.getMark()) currentTurn = player_2.getMark();
     else currentTurn = player_1.getMark();
   };
 
-  cells.forEach((cell) => {
-    cell.addEventListener(
-      "click",
-      (e) => {
-        const clickedIndex = e.target.dataset.index;
-        GameBoard.setBoard(clickedIndex, currentTurn);
-        DisplayController.drawMark(clickedIndex);
-        GameBoard.checkForGameOver(currentTurn);
-        changeTurn();
-      },
-      { once: true }
-    );
-  });
+  const startGame = () => {
+    gameStart.style.display = "none";
+    game.style.display = "flex";
+  };
+
+  // Reset board array, draw new board,
+  // override old listeners, reset display styles,
+  // and change "currentTurn" to "player_1"
+  const resetGame = () => {
+    GameBoard.resetBoard();
+    DisplayController.drawBoard();
+    addListenerToCells();
+    resetStyles();
+    currentTurn = player_1.getMark();
+  };
+
+  // Draw the mark to the clicked space
+  // check for game over if game over display
+  // the game ove menu with the winner's name
+  // otherwise change turn
+  const makeMove = (e) => {
+    const clickedIndex = e.target.dataset.index;
+    GameBoard.setBoard(clickedIndex, currentTurn);
+    DisplayController.drawMark(clickedIndex);
+
+    if (GameBoard.checkForWin(currentTurn)) {
+      const winner =
+        currentTurn === player_1.getMark()
+          ? player_1.getName()
+          : player_2.getName();
+
+      endGame(`${winner} wins!`);
+    } else if (GameBoard.checkForDraw()) {
+      endGame("It's a draw!");
+    } else {
+      changeTurn();
+    }
+  };
+
+  startBtn.addEventListener("click", startGame);
+  restartBtns.forEach((restartBtn) =>
+    restartBtn.addEventListener("click", resetGame)
+  );
+  addListenerToCells();
 })();
