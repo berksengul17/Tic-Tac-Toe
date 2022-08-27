@@ -94,16 +94,16 @@ input[type="radio"]:checked + label {
 }
 
 /* When selected hide the span that stores the text */
-#ai-button:checked + label span,
-#human-button:checked + label span {
+#ai:checked + label span,
+#human:checked + label span {
   visibility: hidden;
 }
 
-#ai-button:checked + label {
+#ai:checked + label {
   background-image: url("images/ai-img.png");
 }
 
-#human-button:checked + label {
+#human:checked + label {
   background-image: url("images/human.png");
 }
 
