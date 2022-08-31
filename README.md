@@ -19,4 +19,4 @@ This project is from The Odin Project [cirriculum](https://www.theodinproject.co
 * Learned how to make word floating word animation
 * Learned the minimax algorithm and how to apply it
 * Learned how to make customized radio buttons
-* Used factory functions and module patterns
+* Used factory functions and the module pattern 
