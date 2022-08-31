@@ -20,3 +20,4 @@ This project is from The Odin Project [cirriculum](https://www.theodinproject.co
 * Learned the minimax algorithm and how to apply it
 * Learned how to make customized radio buttons
 * Used factory functions and the module pattern 
+* First time trying to make responsive website
